@@ -1,0 +1,139 @@
+ -- WAFFLE APP REQUITREMENT -- 
+
+App creation started (21.01.26)
+
+
+1. Customer Pages
+1.1 Customer Registration Page
+Purpose: Allow a waffle lover to create an account.
+Fields:
+- Name (text input)
+- Email (validate email format)
+- Password (min 6 characters)
+- Phone (numeric validation)
+Validation:
+- All fields required
+- Email format validation
+- Password minimum 6 characters
+- Phone digits only
+Design / Layout:
+- Bootstrap form inside a card, centered
+- Title: “Customer Registration”
+- Responsive layout (col-md-6 offset-md-3)
+- Submit button with hover effect
+- Optional waffle background image
+Dynamic Behavior:
+- Check if email already exists in backend before registering
+- Show success alert after registration
+- Redirect to login page
+
+1.2 Customer Login Page
+Purpose: Allow registered customers to log in.
+Fields: Email, Password
+Action:
+- Verify credentials against backend.customers
+- If valid → redirect to Customer Dashboard
+- If invalid → show error message
+Design / Layout:
+- Similar card layout as registration
+- “Forgot Password?” link optional
+- Mobile-friendly form
+- Bootstrap alert for login errors
+Dynamic Behavior:
+- After login, save logged-in customer info in backend as currentCustomer
+
+1.3 Customer Dashboard
+Purpose: Central hub for browsing and ordering waffles.
+Sections:
+- Welcome Message: Display customer name dynamically
+- Order Waffle Form:
+- Select Waffle Type (dropdown from backend.waffles)
+- Toppings (dropdown from JS array: syrup, berries, chocolate, etc.)
+- Quantity (number input)
+- Notes (textarea for special requests)
+- Submit → Save order in backend.orders with customerId
+- View Orders Table:
+- Columns: Waffle, Toppings, Quantity, Status, Delivery ETA
+- Bootstrap table with hover effect
+- If status is empty → show “Pending”
+Design / Layout:
+- Split layout using Bootstrap Grid:
+- Left: Order Form (col-md-4)
+- Right: Orders Table (col-md-8)
+- Cards for each section for better UX
+Dynamic Behavior:
+- Waffle dropdown generated dynamically from backend
+- Orders table updates in real-time when new order is placed
+- Status updates dynamically (Preparing, Out for Delivery, Delivered)
+
+2. Vendor Pages (Waffle Makers)
+2.1 Vendor Registration Page
+Purpose: Allow waffle vendors to create an account.
+Fields:
+- Name
+- Email
+- Password
+- Shop Name
+- Specialty (Belgian, Savory, Vegan, etc.)
+Validation:
+- All fields required
+- Email validation
+- Password min 6 characters
+Action:
+- Save vendor object in backend.vendors
+Design / Layout:
+- Similar card form as customer registration
+- Optionally add logo/profile picture upload
+Dynamic Behavior:
+- Check for duplicate email
+- Success alert → redirect to vendor login
+
+2.2 Vendor Login Page
+Purpose: Allow vendors to log in.
+Fields: Email, Password
+Action:
+- Verify credentials against backend.vendors
+- If valid → redirect to Vendor Dashboard
+- If invalid → show error
+Dynamic Behavior:
+- Save currentVendor info in backend on login
+
+2.3 Vendor Dashboard
+Purpose: Allow vendors to manage orders and waffle inventory.
+Sections:
+- Orders Table:
+- Columns: Customer Name, Waffle, Toppings, Quantity, Status
+- Bootstrap table, dynamic rows filtered by vendorId
+- Update Order Status:
+- For each order row, button “Update Status” opens modal
+- Modal allows vendor to set status: Preparing, Ready, Out for Delivery
+- Save status to backend.orders
+- Manage Waffles:
+- Add new waffle types (name, description, price, image)
+- Update inventory
+Design / Layout:
+- Bootstrap table with hover effect
+- Modals for status updates and waffle management
+- Alerts for important info (e.g., “No orders today”)
+Dynamic Behavior:
+- Orders load dynamically
+- Status updates saved in backend
+- Inventory changes reflected instantly
+
+3. Shared / Additional Pages
+3.1 Waffles Page (Optional)
+Purpose: Manage list of waffle products.
+Features:
+- Display all waffles in a Bootstrap table
+- Add new waffle: Name, Type (Sweet, Savory, Vegan), Price
+- Search/filter waffles dynamically using JS
+Design / Layout:
+- Table with search box above
+- Add new waffle form in modal
+- Cards for waffle summary (optional)
+Dynamic Behavior:
+- Waffle list fetched from backend.waffles
+- New waffles dynamically appended to table
+
+This way, your waffle site mirrors the medical site structure but swaps patients → customers, doctors → vendors, and appointments → orders.
+👉 Do you want me to draft a sample Bootstrap form code for the Customer Registration Page so you can start coding Waffke right away?

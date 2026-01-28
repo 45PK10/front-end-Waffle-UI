@@ -1,0 +1,165 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="../styles/index.css">
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/customerDashboard.css">
+
+
+  <!-- Import of blender  -->
+  <script type="importmap">
+        {
+            "imports": {
+              "three": "https://unpkg.com/three@0.158.0/build/three.module.js",
+              "three/addons/": "https://unpkg.com/three@0.158.0/examples/jsm/"
+            }
+          }
+        
+    </script>
+</head>
+
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="#">WAFFLE LOVE</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" href="../index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link disabled" aria-disabled="true">policy</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Contact</a>
+          </li>
+        </ul>
+        <form class="d-flex" role="search">
+          <input class="form-control me-2" type="search" placeholder="Search" />
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+      </div>
+    </div>
+  </nav>
+
+  <section>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-2">
+          <div class="card mb-2" id="card">
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+
+
+  <div id="three-bg"></div>
+
+
+  <script type="module" src="../scripts/blend.js">
+  </script>
+
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+
+  <script>
+
+    let Waffle = [];
+
+
+    // Render Waffle cards
+    function getWaffle() {
+      var str = '';
+      for (i = 0; i < Waffle.length; i++) {
+
+        str += `
+        <div class="card p-4" style="width: 15rem; height: 20rem;">
+    <img src="${Waffle[i].url}"  style = "height : 120px";alt="...">
+    <div class="card-body" style="width: 10rem; height: 15rem;">
+      <h5 class="card-title">${Waffle[i].name}</h5>
+       <h6>Price - ${Waffle[i].price}/-</h6>
+      <a href="#" class="btn btn-success">BUY</a>
+      <button  class="btn btn-primary cart-btn" data-id="${Waffle[i].id}">CART</button>
+
+    </div>
+  </div>`;
+      }
+      document.querySelector('.row').innerHTML = str;
+    }
+
+    getWaffle();
+
+    // Fetch Waffles from backend
+    async function get() {
+      try {
+        const response = await fetch('http://localhost:4000/Waffle', {
+          method: 'GET'
+        })
+        Waffle = await response.json();
+        getWaffle();
+        console.log(Waffle);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    get();
+
+    // const cart = document.getElementById('cart');
+
+    let cartz = [];
+    document.addEventListener('click', async function (e) {
+      if (e.target.classList.contains('cart-btn')) {
+        e.preventDefault();
+        const waffleId = e.target.getAttribute('data-id');
+        const waffle = Waffle.find(w => w.id == waffleId);
+
+        // if(!waffle){
+        //   console.log('Waffle not found with this id', waffleId)
+        // }
+
+        try {
+          const response = await fetch('http://localhost:4000/cartz', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(waffle)
+          });
+
+          if(!response.ok){
+            const text = await response.text();
+            throw new Error (`Server error : ${text} `);
+          }
+          cartz = await response.json();
+          console.log("Added to cart:", waffleId);
+          localStorage.setItem('cartz', JSON.stringify(cartz));
+          window.location.href = 'cart.html';
+        } catch (error) {
+          console.error("Error adding to cart:", error);
+        }
+      }
+    });
+
+  </script>
+
+</body>
+
+</html>

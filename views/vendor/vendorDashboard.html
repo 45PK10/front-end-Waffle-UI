@@ -1,0 +1,109 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendor Interface</title>
+      <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles/index.css">\
+  <link rel="stylesheet" href="../../styles/vendorDashboard.css">
+</head>
+<body>
+
+      <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="#">WAFFLE LOVE</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" href="../index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link disabled" aria-disabled="true">policy</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Contact</a>
+          </li>
+        </ul>
+        <form class="d-flex" role="search">
+          <input class="form-control me-2" type="search" placeholder="Search" />
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+      </div>
+    </div>
+  </nav>
+    
+ <!-- Vendor Block -->
+  <section>
+    <div class="Head">
+        <h2>ADDING ITEMS BLOCK</h2>
+    </div>
+</section>
+
+  <!-- FORM -->
+    <form action="" class="form col-lg-5 mx-auto" id="form">
+        <div class="form-group mb-3">
+            <label for="" class="form-label">URL</label>
+            <input type="text" class="form-control" id="url">
+        </div>
+        <div class="form-group mb-3">
+            <label for="" class="form-label">Name of the item</label>
+            <input type="text" class="form-control" id="name" placeholder="itemName">
+        </div>
+        <div class="form-group mb-3">
+            <label for="" class="form-label">Price</label>
+            <input type="number" class="form-control" id="price">
+        </div>
+        <div>
+            <button onclick="fill(event)">Submit</button>
+        </div>
+    </form>
+
+
+    <script>
+
+        async function fill(event){
+            event.preventDefault();
+            try {
+                const req = {
+                    url : document.getElementById('url').value,
+                    name : document.getElementById('name').value,
+                    price : document.getElementById('price').value
+                }
+                const str = JSON.stringify(req);
+                const response = await fetch('http://localhost:4000/Waffle', {
+                    method : 'POST',
+                    headers : {
+                        'Content-Type' : 'application/json'
+                    },
+                    body : str
+                })
+                const obj = await response.json();
+                console.log(obj);
+
+                if(response.ok){
+                    window.alert('successfully added');
+                }else{
+                    window.alert('failed to add')
+                }
+            } catch (error) {
+                console.log(error);
+                window.alert('Error occurred while adding item');
+
+            }
+        }
+
+        fill();
+    </script>
+
+
+
+</body>
+</html>

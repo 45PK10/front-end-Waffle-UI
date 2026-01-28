@@ -1,0 +1,74 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+    <style>
+        body{
+            background-color: aliceblue;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div class="container">
+        <div class="row pp">
+         
+        </div>
+      
+   
+
+        <script>
+            let cartz = JSON.parse(localStorage.getItem('cartz'));
+
+            async function getCart() {
+                try {
+                    const req = await fetch('http://localhost:4000/cartz', {
+                        method: 'GET'
+                    })
+                    cartz = await req.json();
+                    console.log(cartz);
+
+                    var str = '';
+                    cartz.forEach(function (cart) {
+                        str += `
+          <div class="col-lg-6 mb-3">
+            <div class="card p-3">
+              <div class="row align-items-center">
+                <!-- Image column -->
+                <div class="col-4">
+                  <img src="${cart.url}" alt="${cart.name}" class="img-fluid" style="max-width:100px;">
+                </div>
+                <!-- Name column -->
+                <div class="col-8">
+                  <h2>${cart.name}</h2>
+                </div>
+              </div>
+            </div>
+          </div>`;
+                    })
+
+                    document.querySelector('.pp').innerHTML = str;
+
+                    if (cartz.length > 5) {
+                        window.alert('only limit is 5')
+                    }
+
+                } catch (error) {
+                    console.log(error);
+
+                }
+            }
+
+            getCart();
+
+
+
+
+        </script>
+</body>
+
+</html>
